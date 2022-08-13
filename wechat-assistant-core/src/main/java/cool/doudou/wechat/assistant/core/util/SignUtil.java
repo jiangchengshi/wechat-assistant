@@ -15,7 +15,7 @@ public class SignUtil {
      * @param token     Token
      * @param timestamp 时间戳
      * @param nonce     随机字符串
-     * @return
+     * @return 签名字符串
      */
     public static String server(String token, String timestamp, String nonce) {
         String[] paramArr = new String[]{token, timestamp, nonce};
