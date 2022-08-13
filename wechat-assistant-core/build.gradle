@@ -1,0 +1,20 @@
+description("核心包")
+
+dependencies {
+    api project(":wechat-assistant-annotation")
+
+    implementation("org.springframework.boot:spring-boot-autoconfigure")
+    implementation("org.springframework:spring-web")
+
+    implementation("javax.xml.bind:jaxb-api:${depVersion.jaxb}")
+    implementation("org.glassfish.jaxb:jaxb-runtime:${depVersion.jaxb}")
+
+    implementation("com.squareup.okhttp3:okhttp:${depVersion.okhttp}")
+    api("com.alibaba.fastjson2:fastjson2:${depVersion.fastjson2}")
+
+    compileOnly("javax.servlet:servlet-api:2.5")
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -1,0 +1,149 @@
+// 编译脚本
+buildscript {
+    ext {
+        depVersion = [
+                springBoot: "2.7.2",
+                jaxb      : "2.3.1",
+                okhttp    : "4.10.0",
+                fastjson2 : "2.0.10",
+                log4j2    : "2.18.0",
+                lombok    : "1.18.24"
+        ]
+    }
+
+    // 仓库配置
+    repositories {
+        mavenCentral()
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/spring' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${depVersion.springBoot}")
+    }
+}
+
+allprojects {
+    group = "cool.doudou"
+    version = "2.0.0-SNAPSHOT"
+}
+
+// 子模块配置
+subprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
+    apply plugin: 'io.spring.dependency-management'
+
+    // 仓库配置
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "https://maven.aliyun.com/repository/central" }
+        maven { url "https://maven.aliyun.com/repository/spring" }
+        maven { url "https://maven.aliyun.com/repository/google" }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    }
+
+    configurations {
+        all*.exclude group: "spring-boot-starter-logging"
+        all*.exclude module: "spring-boot-starter-tomcat"
+    }
+
+    // 依赖管理
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:${depVersion.springBoot}"
+        }
+    }
+
+    dependencies {
+        compileOnly("org.apache.logging.log4j:log4j-core:${depVersion.log4j2}")
+        compileOnly("org.apache.logging.log4j:log4j-slf4j-impl:${depVersion.log4j2}")
+
+        // lombok
+        compileOnly("org.projectlombok:lombok:${depVersion.lombok}")
+        annotationProcessor("org.projectlombok:lombok:${depVersion.lombok}")
+
+        testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+    }
+
+    task sourcesJar(type: Jar) {
+        from sourceSets.main.allJava
+        classifier = 'sources'
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        from javadoc
+        classifier = 'javadoc'
+    }
+
+    // 解决javadoc打包乱码
+    javadoc {
+        options.encoding = "UTF-8"
+        options.charSet = "UTF-8"
+        options.author = true
+        options.version = true
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                groupId project.group
+                artifactId project.name
+                version "${version}"
+
+                // components.java jar包 || components.auth war包
+                from components.java
+
+                artifact sourcesJar
+                artifact javadocJar
+
+                // 添加 pom 相关信息
+                // https://docs.gradle.org/current/dsl/org.gradle.api.publish.maven.MavenPublication.html
+                pom {
+                    name = "wechat-assistant"
+                    description = "Wechat Assistant"
+                    url = "https://github.com/jiangchengshi/wechat-assistant"
+                    licenses {
+                        license {
+                            name = "The Apache License, Version 2.0"
+                            url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = "jiangcs"
+                            name = "这么诚实"
+                            email = "jiangchengshi@gmail.com"
+                        }
+                    }
+                    // 版本控制仓库地址
+                    scm {
+                        url = 'https://github.com/jiangchengshi/wechat-assistant.git'
+                        connection = 'scm:git:git://github.com/jiangchengshi/wechat-assistant.git'
+                        developerConnection = 'scm:git:ssh://git@github.com:jiangchengshi/wechat-assistant.git'
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                def releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+                def snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+                url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+                credentials {
+                    username = sonatypeUsername
+                    password = sonatypePassword
+                }
+            }
+        }
+    }
+
+    signing {
+        sign publishing.publications.mavenJava
+    }
+}

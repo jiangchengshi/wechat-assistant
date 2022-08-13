@@ -1,0 +1,5 @@
+rootProject.name = 'wechat-assistant'
+
+include 'wechat-assistant-core'
+include 'wechat-assistant-annotation'
+include 'wechat-assistant-boot-starter'
