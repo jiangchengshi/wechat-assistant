@@ -140,7 +140,7 @@ public class WechatService {
         return null;
     }
 
-    public boolean add(String appId, String json) {
+    public boolean create(String appId, String json) {
         JSONObject resultObj = wechatApi.createMenu(appId, json);
         if (resultObj != null) {
             int code = resultObj.getInteger("errcode");

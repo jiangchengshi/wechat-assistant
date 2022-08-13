@@ -46,9 +46,9 @@ public class WechatController {
         return wechatService.get(appId);
     }
 
-    @PostMapping("menu/add/{appId}")
-    public boolean add(@PathVariable("appId") String appId, @RequestBody String json) {
-        return wechatService.add(appId, json);
+    @PostMapping("menu/create/{appId}")
+    public boolean create(@PathVariable("appId") String appId, @RequestBody String json) {
+        return wechatService.create(appId, json);
     }
 
     @PostMapping("menu/delete/{appId}")

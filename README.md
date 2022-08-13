@@ -1,8 +1,8 @@
 # 欢迎使用 Wechat-Assistant
 
-[![Maven](https://img.shields.io/badge/Maven-v2.0.0-blue)](https://search.maven.org/search?q=g:cool.doudou%20a:wechat-assistant-*)
+[![Maven](https://img.shields.io/badge/Maven-v1.0.0-blue)](https://search.maven.org/search?q=g:cool.doudou%20a:wechat-assistant-*)
 [![License](https://img.shields.io/badge/License-Apache%202-4EB1BA.svg?style=flat-square)](https://www.apache.org/licenses/LICENSE-2.0)
-![SpringBoot](https://img.shields.io/badge/SpringBoot-v2.7.2-blue)
+![SpringBoot](https://img.shields.io/badge/SpringBoot-v2.6.10-blue)
 
 ## 简介
 
@@ -39,6 +39,21 @@ wechat:
 
 ### 使用方式
 
+> 消息
+
+```java
+public class RespMsgHelper {
+    // 文本消息
+    public void text(ReceiveMsg receiveMsg, String content);
+
+    // 图文消息
+    public void imgText(ReceiveMsg receiveMsg, List<Map<String, String>> articleList);
+
+    // 模版消息
+    public void template(String appId, String openId, String templateId, Map<String, Object> templateParam);
+}
+```
+
 > 消息通知
 
 ```java
@@ -65,6 +80,17 @@ public class WxNotifyComponent {
 > 接收事件推送：微信用户和公众号产生交互的过程中，用户的某些操作会使得微信服务器通过事件推送的形式通知到开发者在开发者中心处设置的服务器地址
 
 - POST /wechat/notify
+
+> 菜单管理
+
+- GET /menu/get/{appId}
+- POST /menu/create/{appId}
+- POST /menu/delete/{appId}
+
+> Token管理
+
+- POST /access-token
+- POST /js-api-ticket
 
 ## 版权
 
