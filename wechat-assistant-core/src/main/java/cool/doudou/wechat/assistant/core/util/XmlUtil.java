@@ -21,8 +21,9 @@ public class XmlUtil {
      * @param xml   XML字符串
      * @param clazz 类
      * @return 对象
+     * @throws Exception 解析异常
      */
-    public static <T> Object unMarshal(String xml, Class<T> clazz) throws Exception {
+    public static Object unMarshal(String xml, Class<?> clazz) throws Exception {
         jaxbContext = JAXBContext.newInstance(clazz);
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
         StringReader reader = new StringReader(xml);
@@ -35,8 +36,9 @@ public class XmlUtil {
      * @param obj   对象
      * @param clazz 类
      * @return 字符串
+     * @throws Exception 解析异常
      */
-    public static <T> String marshal(Object obj, Class<T> clazz) throws Exception {
+    public static String marshal(Object obj, Class<?> clazz) throws Exception {
         jaxbContext = JAXBContext.newInstance(clazz);
         Marshaller marshaller = jaxbContext.createMarshaller();
         StringWriter writer = new StringWriter();
