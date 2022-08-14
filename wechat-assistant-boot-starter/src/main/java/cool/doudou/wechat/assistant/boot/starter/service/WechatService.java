@@ -95,8 +95,7 @@ public class WechatService {
                 throw new RuntimeException("微信通讯标识获取失败");
             }
 
-            modelAndView = new ModelAndView("redirect:" + wechatProperties.getCallbackServerAddress() + "/#/"
-                    + oauth2Service.route(wechatProperties.getCallbackServerAddress(), state));
+            modelAndView = new ModelAndView("redirect:" + wechatProperties.getCallbackServerAddress() + "/#/" + oauth2Service.route(state));
         } catch (Exception e) {
             log.error("微信授权oauth2异常：", e);
 
