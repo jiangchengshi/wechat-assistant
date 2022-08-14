@@ -67,6 +67,20 @@ public class WxNotifyComponent {
 }
 ```
 
+> 网页授权：重定向后会带上 state 参数，多个以"_"分隔，第一个参数必须为有效的appId
+
+```java
+
+@Component
+public class OAuth2ServiceImpl implements IOAuth2Service {
+    @Override
+    public String route(String callbackServerAddress, String state) {
+        String[] stateArr = state.split("_");
+        return new ModelAndView("redirect:" + callbackServerAddress + "/#/home?" + stateArr[0] + "&" + stateArr[1]);
+    }
+}
+```
+
 ### 其他说明
 
 > 验证消息的确来自微信服务器：开发者提交信息后，微信服务器将发送 GET 请求到填写的服务器地址 URL 上
