@@ -8,8 +8,9 @@ package cool.doudou.wechat.assistant.boot.starter.service;
  */
 public interface IOAuth2Service {
     /**
-     * @param extraParam 额外参数
+     * @param callbackServerAddress 回调服务地址
+     * @param extraParam            额外参数
      * @return 前端 路由
      */
-    String route(String extraParam);
+    String route(String callbackServerAddress, String extraParam);
 }
