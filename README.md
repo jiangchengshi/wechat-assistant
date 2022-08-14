@@ -76,7 +76,7 @@ public class OAuth2ServiceImpl implements IOAuth2Service {
     @Override
     public String route(String callbackServerAddress, String state) {
         String[] stateArr = state.split("_");
-        return new ModelAndView("redirect:" + callbackServerAddress + "/#/home?" + stateArr[0] + "&" + stateArr[1]);
+        return "home?" + stateArr[0] + "&" + stateArr[1];
     }
 }
 ```
