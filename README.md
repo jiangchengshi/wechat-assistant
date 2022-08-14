@@ -39,7 +39,7 @@ wechat:
 
 ### 使用方式
 
-> 消息
+> 消息：API
 
 ```java
 public class RespMsgHelper {
@@ -54,7 +54,7 @@ public class RespMsgHelper {
 }
 ```
 
-> 消息通知
+> 消息通知：注解方法
 
 ```java
 
@@ -63,6 +63,20 @@ public class WxNotifyComponent {
     @WechatNotify
     public void wechatNotify(ReceiveMsg receiveMsg) {
         System.out.println(receiveMsg);
+    }
+}
+```
+
+> 网页授权：重定向后会带上 state 参数，多个以"_"分隔，第一个参数必须为有效的appId
+
+```java
+
+@Component
+public class OAuth2ServiceImpl implements IOAuth2Service {
+    @Override
+    public String route(String callbackServerAddress, String state) {
+        String[] stateArr = state.split("_");
+        return new ModelAndView("redirect:" + callbackServerAddress + "/#/home?" + stateArr[0] + "&" + stateArr[1]);
     }
 }
 ```
