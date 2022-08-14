@@ -39,7 +39,7 @@ wechat:
 
 ### 使用方式
 
-> 消息
+> 消息：API
 
 ```java
 public class RespMsgHelper {
@@ -54,7 +54,7 @@ public class RespMsgHelper {
 }
 ```
 
-> 消息通知
+> 消息通知：注解方法
 
 ```java
 
@@ -74,9 +74,9 @@ public class WxNotifyComponent {
 @Component
 public class OAuth2ServiceImpl implements IOAuth2Service {
     @Override
-    public String route(String callbackServerAddress, String state) {
+    public String route(String state) {
         String[] stateArr = state.split("_");
-        return new ModelAndView("redirect:" + callbackServerAddress + "/#/home?" + stateArr[0] + "&" + stateArr[1]);
+        return "home?" + stateArr[0] + "&" + stateArr[1];
     }
 }
 ```
