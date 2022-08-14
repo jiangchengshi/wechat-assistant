@@ -74,7 +74,7 @@ public class WxNotifyComponent {
 @Component
 public class OAuth2ServiceImpl implements IOAuth2Service {
     @Override
-    public String route(String callbackServerAddress, String state) {
+    public String route(String state) {
         String[] stateArr = state.split("_");
         return "home?" + stateArr[0] + "&" + stateArr[1];
     }
