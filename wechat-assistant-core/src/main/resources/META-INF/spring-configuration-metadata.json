@@ -8,7 +8,7 @@
   "properties": [
     {
       "name": "wechat.credentials",
-      "type": "java.util.List<cool.doudou.wechat.assistant.core.properties.Credential>",
+      "type": "java.util.List<cool.doudou.wechat.assistant.core.entity.Credential>",
       "description": "微信凭证信息",
       "sourceType": "cool.doudou.wechat.assistant.core.properties.WechatProperties",
       "defaultValue": []
