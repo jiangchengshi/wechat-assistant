@@ -65,14 +65,14 @@ public class WechatService {
         ModelAndView modelAndView;
 
         try {
-            // 根据 state 获取 appId 和 extraParam
-            // wx0151679cedc88df4_platform
+            // 重定向后会带上 state 参数，开发者可以填写a-zA-Z0-9的参数值，最多128字节
+            // 多个参数以"_"分隔，第1个参数必须是appId
             String[] stateArray = state.split("_");
             if (stateArray.length == 0) {
                 throw new RuntimeException("微信授权回掉参数state验证失败");
             }
 
-            String appId = stateArray[0], secret = null, extraParam = stateArray[1];
+            String appId = stateArray[0], secret = null;
             for (Credential credential : wechatProperties.getCredentials()) {
                 if (appId.equals(credential.getAppId())) {
                     secret = credential.getSecret();
@@ -95,7 +95,8 @@ public class WechatService {
                 throw new RuntimeException("微信通讯标识获取失败");
             }
 
-            modelAndView = new ModelAndView("redirect:" + wechatProperties.getCallbackServerAddress() + "/#/" + oauth2Service.route(wechatProperties.getCallbackServerAddress(), extraParam));
+            modelAndView = new ModelAndView("redirect:" + wechatProperties.getCallbackServerAddress() + "/#/"
+                    + oauth2Service.route(wechatProperties.getCallbackServerAddress(), state));
         } catch (Exception e) {
             log.error("微信授权oauth2异常：", e);
 
